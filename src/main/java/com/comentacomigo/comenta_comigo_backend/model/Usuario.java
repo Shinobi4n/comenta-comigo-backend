@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToOne;
 
 @Entity
 @Table(name = "usuarios")
@@ -54,4 +56,12 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Perfil perfil;
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
 }
