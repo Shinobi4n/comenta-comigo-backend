@@ -6,16 +6,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record ObraRequestDTO(
-    @NotBlank(message = "O título não pode estar em branco")
-    String titulo,
+        @NotBlank(message = "O título não pode estar em branco") String titulo,
 
-    @NotNull(message = "O tipo da obra é obrigatório")
-    TipoObra tipo,
+        @NotNull(message = "O tipo da obra é obrigatório") TipoObra tipo,
 
-    Integer anoLancamento,
+        Integer anoLancamento,
 
-    String sinopse,
+        String sinopse,
 
-    String capaUrl
-) {
+        String capaUrl) {
 }

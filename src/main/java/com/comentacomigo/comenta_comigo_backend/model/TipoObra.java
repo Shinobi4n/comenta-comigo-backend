@@ -4,5 +4,7 @@ public enum TipoObra {
     FILME,
     SERIE,
     ALBUM,
-    LIVRO
+    LIVRO,
+    DISCO,
+    REVISTA
 }
