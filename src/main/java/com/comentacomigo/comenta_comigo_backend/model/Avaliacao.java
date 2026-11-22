@@ -1,4 +1,3 @@
-
 package com.comentacomigo.comenta_comigo_backend.model;
 
 import jakarta.persistence.*;

@@ -1,4 +1,3 @@
-
 package com.comentacomigo.comenta_comigo_backend.dto;
 
 public class ComentarioDTO {
