@@ -8,8 +8,7 @@ import com.comentacomigo.comenta_comigo_backend.model.Perfil;
 
 public interface PerfilRepository extends JpaRepository<Perfil, Long> {
 
-    boolean existsByUsuarioId(Long usuarioID);
+    boolean existsByUsuarioId(Long usuarioId);
 
     Optional<Perfil> findByUsuarioId(Long usuarioId);
-
 }

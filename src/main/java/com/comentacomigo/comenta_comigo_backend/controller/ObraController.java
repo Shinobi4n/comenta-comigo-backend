@@ -1,5 +1,6 @@
 package com.comentacomigo.comenta_comigo_backend.controller;
 
+
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -13,11 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.comentacomigo.comenta_comigo_backend.dto.ObraRequestDTO;
-import com.comentacomigo.comenta_comigo_backend.dto.ObraResponseDTO;
+import com.comentacomigo.comenta_comigo_backend.model.Obra;
 import com.comentacomigo.comenta_comigo_backend.service.ObraService;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/obras")
@@ -30,24 +28,24 @@ public class ObraController {
     }
 
     @GetMapping
-    public List<ObraResponseDTO> listar() {
+    public List<Obra> listar() {
         return service.listar();
     }
 
     @GetMapping("/{id}")
-    public ObraResponseDTO buscarPorId(@PathVariable Long id) {
+    public Obra buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ObraResponseDTO criar(@Valid @RequestBody ObraRequestDTO dto) {
-        return service.criar(dto);
+    public Obra criar(@RequestBody Obra obra) {
+        return service.criar(obra);
     }
 
     @PutMapping("/{id}")
-    public ObraResponseDTO atualizar(@PathVariable Long id, @Valid @RequestBody ObraRequestDTO dto) {
-        return service.atualizar(id, dto);
+    public Obra atualizar(@PathVariable Long id, @RequestBody Obra obra) {
+        return service.atualizar(id, obra);
     }
 
     @DeleteMapping("/{id}")
@@ -56,3 +54,5 @@ public class ObraController {
         service.excluir(id);
     }
 }
+
+

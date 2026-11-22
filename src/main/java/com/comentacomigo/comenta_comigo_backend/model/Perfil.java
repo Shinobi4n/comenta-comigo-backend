@@ -1,5 +1,7 @@
 package com.comentacomigo.comenta_comigo_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +17,7 @@ public class Perfil {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(length = 500)
     private String bio;
@@ -28,7 +30,6 @@ public class Perfil {
     private Usuario usuario;
 
     public Perfil() {
-
     }
 
     public Long getId() {
@@ -51,6 +52,7 @@ public class Perfil {
         this.fotoUrl = fotoUrl;
     }
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public Usuario getUsuario() {
         return usuario;
     }
@@ -58,5 +60,4 @@ public class Perfil {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-
 }
