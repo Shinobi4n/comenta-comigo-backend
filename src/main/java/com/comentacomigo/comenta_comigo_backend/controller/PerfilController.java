@@ -13,12 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.comentacomigo.comenta_comigo_backend.dto.PerfilAtualizacaoDTO;
-import com.comentacomigo.comenta_comigo_backend.dto.PerfilRequestDTO;
-import com.comentacomigo.comenta_comigo_backend.dto.PerfilResponseDTO;
+import com.comentacomigo.comenta_comigo_backend.model.Perfil;
 import com.comentacomigo.comenta_comigo_backend.service.PerfilService;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/perfis")
@@ -31,29 +27,29 @@ public class PerfilController {
     }
 
     @GetMapping
-    public List<PerfilResponseDTO> listar() {
+    public List<Perfil> listar() {
         return service.listar();
     }
 
     @GetMapping("/{id}")
-    public PerfilResponseDTO buscarPorId(@PathVariable Long id) {
+    public Perfil buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id);
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    public PerfilResponseDTO buscarPorUsuario(@PathVariable Long usuarioId) {
+    public Perfil buscarPorUsuario(@PathVariable Long usuarioId) {
         return service.buscarPorUsuario(usuarioId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PerfilResponseDTO criar(@Valid @RequestBody PerfilRequestDTO dto) {
-        return service.criar(dto);
+    public Perfil criar(@RequestBody Perfil perfil) {
+        return service.criar(perfil);
     }
 
     @PutMapping("/{id}")
-    public PerfilResponseDTO atualizar(@PathVariable Long id, @Valid @RequestBody PerfilAtualizacaoDTO dto) {
-        return service.atualizar(id, dto);
+    public Perfil atualizar(@PathVariable Long id, @RequestBody Perfil perfil) {
+        return service.atualizar(id, perfil);
     }
 
     @DeleteMapping("/{id}")

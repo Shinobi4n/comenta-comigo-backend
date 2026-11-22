@@ -3,11 +3,10 @@ package com.comentacomigo.comenta_comigo_backend.service;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.comentacomigo.comenta_comigo_backend.dto.UsuarioRequestDTO;
-import com.comentacomigo.comenta_comigo_backend.dto.UsuarioResponseDTO;
 import com.comentacomigo.comenta_comigo_backend.model.Usuario;
 import com.comentacomigo.comenta_comigo_backend.repository.UsuarioRepository;
 
@@ -16,34 +15,49 @@ public class UsuarioService {
 
     private final UsuarioRepository repository;
 
+    private final BCryptPasswordEncoder passwordEncoder =
+            new BCryptPasswordEncoder();
+
     public UsuarioService(UsuarioRepository repository) {
         this.repository = repository;
     }
 
-    public List<UsuarioResponseDTO> listar() {
-        return repository.findAll().stream().map(this::toResponse).toList();
+    public List<Usuario> listar() {
+        return repository.findAll();
     }
 
-    public UsuarioResponseDTO buscarPorId(Long id) {
-        return toResponse(buscarEntidade(id));
+    public Usuario buscarPorId(Long id) {
+        return buscarEntidade(id);
     }
 
-    public UsuarioResponseDTO criar(UsuarioRequestDTO dto) {
-        if (repository.existsByEmail(dto.email())) {
+    public Usuario criar(Usuario usuario) {
+
+        if (repository.existsByEmail(usuario.getEmail())) {
             throw emailJaCadastrado();
         }
-        Usuario usuario = new Usuario();
-        preencher(usuario, dto);
-        return toResponse(repository.save(usuario));
+
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+
+        return repository.save(usuario);
     }
 
-    public UsuarioResponseDTO atualizar(Long id, UsuarioRequestDTO dto) {
+    public Usuario atualizar(Long id, Usuario dados) {
+
         Usuario usuario = buscarEntidade(id);
-        if (!usuario.getEmail().equals(dto.email()) && repository.existsByEmail(dto.email())) {
+
+        if (!usuario.getEmail().equals(dados.getEmail())
+                && repository.existsByEmail(dados.getEmail())) {
             throw emailJaCadastrado();
         }
-        preencher(usuario, dto);
-        return toResponse(repository.save(usuario));
+
+        usuario.setNome(dados.getNome());
+        usuario.setEmail(dados.getEmail());
+
+        if (dados.getSenha() != null && !dados.getSenha().isBlank()) {
+            usuario.setSenha(passwordEncoder.encode(dados.getSenha()));
+        }
+
+        return repository.save(usuario);
     }
 
     public void excluir(Long id) {
@@ -52,20 +66,12 @@ public class UsuarioService {
 
     private Usuario buscarEntidade(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Usuário não encontrado"));
     }
 
     private ResponseStatusException emailJaCadastrado() {
-        return new ResponseStatusException(HttpStatus.CONFLICT, "E-mail já cadastrado");
-    }
-
-    private void preencher(Usuario usuario, UsuarioRequestDTO dto) {
-        usuario.setNome(dto.nome());
-        usuario.setEmail(dto.email());
-        usuario.setSenha(dto.senha());
-    }
-
-    private UsuarioResponseDTO toResponse(Usuario usuario) {
-        return new UsuarioResponseDTO(usuario.getId(), usuario.getNome(), usuario.getEmail());
+        return new ResponseStatusException(
+                HttpStatus.CONFLICT, "E-mail já cadastrado");
     }
 }

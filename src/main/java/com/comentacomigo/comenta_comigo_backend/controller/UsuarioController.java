@@ -13,11 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.comentacomigo.comenta_comigo_backend.dto.UsuarioRequestDTO;
-import com.comentacomigo.comenta_comigo_backend.dto.UsuarioResponseDTO;
+import com.comentacomigo.comenta_comigo_backend.model.Usuario;
 import com.comentacomigo.comenta_comigo_backend.service.UsuarioService;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -30,24 +27,24 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public List<UsuarioResponseDTO> listar() {
+    public List<Usuario> listar() {
         return service.listar();
     }
 
     @GetMapping("/{id}")
-    public UsuarioResponseDTO buscarPorId(@PathVariable Long id) {
+    public Usuario buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UsuarioResponseDTO criar(@Valid @RequestBody UsuarioRequestDTO dto) {
-        return service.criar(dto);
+    public Usuario criar(@RequestBody Usuario usuario) {
+        return service.criar(usuario);
     }
 
     @PutMapping("/{id}")
-    public UsuarioResponseDTO atualizar(@PathVariable Long id, @Valid @RequestBody UsuarioRequestDTO dto) {
-        return service.atualizar(id, dto);
+    public Usuario atualizar(@PathVariable Long id, @RequestBody Usuario usuario) {
+        return service.atualizar(id, usuario);
     }
 
     @DeleteMapping("/{id}")
