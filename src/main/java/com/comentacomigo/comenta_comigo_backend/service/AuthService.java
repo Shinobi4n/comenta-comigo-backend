@@ -56,4 +56,14 @@ public class AuthService {
 
     }
 
+    public void logout(String token) {
+
+        Sessao sessao = sessaoRepository.findByToken(token)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.UNAUTHORIZED, "Sessão inválida"));
+
+        sessaoRepository.delete(sessao);
+
+    }
+
 }

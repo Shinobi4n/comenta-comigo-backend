@@ -1,9 +1,12 @@
 package com.comentacomigo.comenta_comigo_backend.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.comentacomigo.comenta_comigo_backend.service.AuthService;
 import com.comentacomigo.comenta_comigo_backend.model.Sessao;
@@ -32,6 +35,15 @@ public class AuthController {
                 "nome", sessao.getUsuario().getNome(),
                 "email", sessao.getUsuario().getEmail());
 
+    }
+
+    @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void logout(@RequestHeader("Authorization") String authorization) {
+
+        String token = authorization.replace("Bearer ", "");
+
+        service.logout(token);
     }
 
 }
