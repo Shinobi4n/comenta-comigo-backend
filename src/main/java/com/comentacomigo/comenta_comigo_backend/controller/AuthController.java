@@ -46,4 +46,12 @@ public class AuthController {
         service.logout(token);
     }
 
+    @PostMapping("/recuperar-senha")
+    public Map<String, String> recuperarSenha(@RequestBody Usuario dados) {
+
+        service.solicitarRecuperacao(dados.getEmail());
+
+        return Map.of("mensagem", "Se o e-mail estiver cadastrado, enviaremos as instruções de recuperação");
+    }
+
 }
