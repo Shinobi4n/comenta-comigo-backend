@@ -104,4 +104,23 @@ public class AuthService {
 
         emailService.recuperaSenha(usuario.getEmail(), link);
     }
+
+    public void redefinirSenha(String token, String novaSenha) {
+
+        if (token == null || token.isBlank() || novaSenha.isBlank()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Informe o token e a nova senha!");
+        }
+
+        TokenRecuperacao tokenRecuperacao = tokenRecuperacaoRepository.findByToken(token)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "Link inválido ou expirado"));
+
+        if (tokenRecuperacao.getUsado() || tokenRecuperacao.getExpiraEm().isBefore(LocalDateTime.now())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Link inválido ou expirado");
+        }
+
+    }
+
 }
