@@ -107,7 +107,7 @@ public class AuthService {
 
     public void redefinirSenha(String token, String novaSenha) {
 
-        if (token == null || token.isBlank() || novaSenha.isBlank()) {
+        if (token == null || token.isBlank() || novaSenha == null || novaSenha.isBlank()) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Informe o token e a nova senha!");
         }
@@ -120,6 +120,13 @@ public class AuthService {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Link inválido ou expirado");
         }
+
+        Usuario usuario = tokenRecuperacao.getUsuario();
+        usuario.setSenha(passwordEncoder.encode(novaSenha));
+        usuarioRepository.save(usuario);
+
+        tokenRecuperacao.setUsado(true);
+        tokenRecuperacaoRepository.save(tokenRecuperacao);
 
     }
 

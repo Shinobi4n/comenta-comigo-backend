@@ -54,4 +54,12 @@ public class AuthController {
         return Map.of("mensagem", "Se o e-mail estiver cadastrado, enviaremos as instruções de recuperação");
     }
 
+    @PostMapping("/redefinir-senha")
+    public Map<String, String> redefinirSenha(@RequestBody Map<String, String> dados) {
+
+        service.redefinirSenha(dados.get("token"), dados.get("novaSenha"));
+
+        return Map.of("mensagem", "Nova senha cadastrada com sucesso!");
+    }
+
 }
