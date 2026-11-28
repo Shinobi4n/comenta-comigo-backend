@@ -6,5 +6,7 @@ public enum TipoObra {
     ALBUM,
     LIVRO,
     DISCO,
-    REVISTA
+    REVISTA,
+    JOGO
+
 }

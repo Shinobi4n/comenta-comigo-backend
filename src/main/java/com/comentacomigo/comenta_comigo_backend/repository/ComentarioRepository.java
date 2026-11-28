@@ -8,4 +8,5 @@ public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
 
     List<Comentario> findByObraId(Long obraId);
 
+    void deleteByUsuarioId(Long usuarioId);
 }
