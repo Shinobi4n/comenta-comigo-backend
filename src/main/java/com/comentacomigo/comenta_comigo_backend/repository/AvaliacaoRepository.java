@@ -8,4 +8,5 @@ public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
 
     List<Avaliacao> findByObraId(Long obraId);
 
+    void deleteByUsuarioId(Long usuarioId);
 }
